@@ -1,7 +1,31 @@
-import '../styles/globals.css'
+import { Fragment, useEffect } from "react";
+import ThemeProvider from "../context/ThemeProvider";
+import Head from "next/head";
+import "../styles/globals.css";
 
 function MyApp({ Component, pageProps }) {
-  return <Component {...pageProps} />
+  useEffect(() => {
+    const jssStyles = document.querySelector("#jss-server-side");
+    if (jssStyles) {
+      jssStyles.parentElement.removeChild(jssStyles);
+    }
+  }, []);
+
+  return (
+    <Fragment>
+      <Head>
+        <title>Pokédex</title>
+        <link rel="icon" href="/favicon.ico" />
+        <meta
+          name="viewport"
+          content="minimum-scale=1, initial-scale=1, width=device-width"
+        />
+      </Head>
+      <ThemeProvider>
+        <Component {...pageProps} />
+      </ThemeProvider>
+    </Fragment>
+  );
 }
 
-export default MyApp
+export default MyApp;
