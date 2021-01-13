@@ -9,7 +9,12 @@ import {
 export const ThemeContext = createContext();
 
 const ThemeProvider = (props) => {
-  const muiTheme = createMuiTheme({});
+  const muiTheme = createMuiTheme({
+    palette: {
+      primary: { main: "#333" },
+      secondary: { main: "#FE0505" },
+    },
+  });
   const theme = responsiveFontSizes(muiTheme);
 
   return (
