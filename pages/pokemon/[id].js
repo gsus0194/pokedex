@@ -140,7 +140,7 @@ Pokemon.getInitialProps = async ({ query }) => {
     .get(`https://pokeapi.co/api/v2/pokemon/${id}`)
     .then((res) => res.data);
   const pokemonSpecies = await axios
-    .get(`http://pokeapi.co/api/v2/pokemon-species/${id}`)
+    .get(`https://pokeapi.co/api/v2/pokemon-species/${id}`)
     .then((res) => res.data);
   return { pokemon, pokemonSpecies };
 };
