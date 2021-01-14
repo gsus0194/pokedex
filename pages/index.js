@@ -9,6 +9,11 @@ const styles = makeStyles((theme) => ({
   root: {
     marginTop: 40,
   },
+  item: {
+    display: "flex",
+    alignItems: "center",
+    justifyContent: "center",
+  },
   button: {
     borderRadius: "50%",
     textDecoration: "none",
@@ -30,7 +35,7 @@ const Home = ({ pokemon }) => {
         <Grid container spacing={2}>
           {pokemon.map((pokemon, i) => {
             return (
-              <Grid item xs={12} sm={6} md={4} key={i}>
+              <Grid item xs={12} sm={6} md={4} key={i} className={classes.item}>
                 <Box display="flex" alignItems="center" justifyContent="center">
                   <Link href={`/pokemon/${i + 1}`} passHref>
                     <a className={classes.button}>
