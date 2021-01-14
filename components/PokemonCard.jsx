@@ -1,7 +1,6 @@
 import {
   Box,
   Chip,
-  Grid,
   makeStyles,
   Typography,
   useMediaQuery,
@@ -11,14 +10,12 @@ import React, { useEffect, useState } from "react";
 import { TYPE_COLORS, TITLE_COLORS, BG_COLORS } from "../utils/colors";
 
 const styles = makeStyles((theme) => ({
-  ball: {
-    display: "flex",
-    flexDirection: "column",
-    alignItems: "center",
-    justifyContent: "center",
-    borderRadius: "50%",
-    width: 300,
-    height: 300,
+  box: {
+    transform: "scale(1)",
+    transition: "0.3s ease-in-out",
+    "&:hover": {
+      transform: "scale(1.05)",
+    },
   },
   title: {
     fontWeight: 800,
@@ -89,54 +86,62 @@ const PokemonCard = ({ url }) => {
   }, []);
 
   return (
-    <Grid item xs={12} sm={6} md={4}>
-      <Box display="flex" alignItems="center" justifyContent="center">
-        <div
-          className={classes.ball}
-          style={{ background: `${BG_COLORS[types[0]]}` }}
+    <Box
+      display="flex"
+      alignItems="center"
+      justifyContent="center"
+      flexDirection="column"
+      borderRadius="50%"
+      width={300}
+      height={300}
+      className={classes.box}
+      style={{ background: `${BG_COLORS[types[0]]}` }}
+    >
+      <Typography
+        className={classes.title}
+        variant="h3"
+        style={{ color: TITLE_COLORS[types[0]] }}
+      >
+        #{id}
+      </Typography>
+      <div
+        className={classes.bgImg}
+        style={{
+          backgroundColor: `${TYPE_COLORS[types[0]]}`,
+        }}
+      >
+        <img
+          src={image}
+          className={classes.img}
+          alt={`${name} official artwork`}
+        />
+      </div>
+      <div className={classes.footer}>
+        <Typography
+          className={classes.name}
+          variant="h5"
+          style={{ color: TITLE_COLORS[types[0]] }}
         >
-          <Typography
-            className={classes.title}
-            variant="h3"
-            style={{ color: TITLE_COLORS[types[0]] }}
-          >
-            #{id}
-          </Typography>
-          <div
-            className={classes.bgImg}
-            style={{
-              backgroundColor: `${TYPE_COLORS[types[0]]}`,
-            }}
-          >
-            <img src={image} className={classes.img} alt="Official Artwork" />
-          </div>
-          <div className={classes.footer}>
-            <Typography
-              className={classes.name}
-              variant="h5"
-              style={{ color: TITLE_COLORS[types[0]] }}
-            >
-              {name}
-            </Typography>
-            <div className={classes.types}>
-              {types.map((type, i) => (
-                <Chip
-                  key={i}
-                  label={type}
-                  className={i > 0 ? classes.twoType : ""}
-                  size={matches ? "medium" : "small"}
-                  style={{
-                    color: TITLE_COLORS[types[i]],
-                    backgroundColor: TYPE_COLORS[types[i]],
-                    textTransform: "capitalize",
-                  }}
-                />
-              ))}
-            </div>
-          </div>
+          {name}
+        </Typography>
+        <div className={classes.types}>
+          {types.map((type, i) => (
+            <Chip
+              key={i}
+              label={type}
+              className={i > 0 ? classes.twoType : ""}
+              size={matches ? "medium" : "small"}
+              style={{
+                color: TITLE_COLORS[types[i]],
+                backgroundColor: TYPE_COLORS[types[i]],
+                textTransform: "capitalize",
+                cursor: "pointer",
+              }}
+            />
+          ))}
         </div>
-      </Box>
-    </Grid>
+      </div>
+    </Box>
   );
 };
 
