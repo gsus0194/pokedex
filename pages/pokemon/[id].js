@@ -120,11 +120,11 @@ const Pokemon = ({ pokemon, pokemonSpecies }) => {
                   growthRate={pokemonSpecies.growth_rate.name}
                 />
               </TabPanel>
-              <TabPanel value={value} index={1}>
-                <Stats />
+              <TabPanel value={value} index={1} style={{ width: "100%" }}>
+                <Stats stats={pokemon.stats} types={pokemon.types} />
               </TabPanel>
               <TabPanel value={value} index={2}>
-                <Evolutions />
+                <Evolutions url={pokemonSpecies.evolution_chain} />
               </TabPanel>
             </Box>
           </Grid>
