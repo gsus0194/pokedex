@@ -1,19 +1,19 @@
-import React, { cloneElement, useEffect, useState } from "react";
+import React, { useEffect } from "react";
 import Navbar from "../components/Navbar";
 import axios from "axios";
 import PokemonCard from "../components/PokemonCard";
 import {
   Box,
-  Button,
   Container,
   Grid,
   makeStyles,
+  Typography,
   useMediaQuery,
-  useScrollTrigger,
   useTheme,
 } from "@material-ui/core";
 import { Pagination } from "@material-ui/lab";
 import { useStateValue } from "../context/StateProvider";
+import SkeletonCard from "../components/SkeletonCard";
 
 const styles = makeStyles((theme) => ({
   root: {

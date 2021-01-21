@@ -9,6 +9,7 @@ import {
 import React, { useEffect, useState } from "react";
 import Link from "next/link";
 import { TYPE_COLORS, TITLE_COLORS, BG_COLORS } from "../utils/colors";
+import SkeletonCard from "./SkeletonCard";
 
 const styles = makeStyles((theme) => ({
   box: {
@@ -71,6 +72,7 @@ const PokemonCard = ({ url }) => {
   const classes = styles();
   const theme = useTheme();
   const matches = useMediaQuery(theme.breakpoints.up("sm"));
+  const [loading, setLoading] = useState(true);
 
   const [id, setId] = useState("");
   const [fullId, setFullId] = useState("");
@@ -94,11 +96,15 @@ const PokemonCard = ({ url }) => {
       setImg(data.sprites.other["official-artwork"].front_default);
       setName(data.name);
       setTypes(typesArray);
+
+      setLoading(false);
     };
     getPokemonData();
   }, [url]);
 
-  return id > 10000 ? null : (
+  return loading ? (
+    <SkeletonCard />
+  ) : id > 10000 ? null : (
     <Link href={`/pokemon/${id}`} passHref>
       <a className={classes.button}>
         <Box

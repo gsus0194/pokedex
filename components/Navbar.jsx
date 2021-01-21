@@ -86,6 +86,7 @@ const Navbar = (props) => {
   const router = useRouter();
   const [anchor, setAnchor] = useState(false);
   const [id, setId] = useState("");
+  const [idError, setIdError] = useState("");
 
   const toggleDrawer = (open) => (e) => {
     if (e.type === "keydown" && (e.key === "Tab" || e.key === "Shift")) {
