@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { cloneElement, useEffect, useState } from "react";
 import Navbar from "../components/Navbar";
 import axios from "axios";
 import PokemonCard from "../components/PokemonCard";
@@ -9,6 +9,7 @@ import {
   Grid,
   makeStyles,
   useMediaQuery,
+  useScrollTrigger,
   useTheme,
 } from "@material-ui/core";
 import { Pagination } from "@material-ui/lab";

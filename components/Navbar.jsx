@@ -3,22 +3,31 @@ import {
   AppBar,
   Button,
   Drawer,
+  Fab,
   IconButton,
   InputBase,
   makeStyles,
   Paper,
   Toolbar,
   Typography,
+  useScrollTrigger,
+  Zoom,
 } from "@material-ui/core";
 import Link from "next/link";
 import { useRouter } from "next/router";
 import HomeIcon from "@material-ui/icons/Home";
 import MenuIcon from "@material-ui/icons/Menu";
+import KeyboardArrowUpIcon from "@material-ui/icons/KeyboardArrowUp";
 // import logo from "/pokemon_logo.svg";
 
 const styles = makeStyles((theme) => ({
   root: {
     flexGrow: 1,
+  },
+  zoom: {
+    position: "fixed",
+    bottom: theme.spacing(2),
+    right: theme.spacing(2),
   },
   menuButton: {
     marginRight: theme.spacing(2),
@@ -43,7 +52,36 @@ const styles = makeStyles((theme) => ({
   },
 }));
 
-const Navbar = ({ children }) => {
+const ScrollTop = (props) => {
+  const { children } = props;
+  const classes = styles();
+
+  const trigger = useScrollTrigger({
+    disableHysteresis: true,
+    threshold: 100,
+  });
+
+  const handleClick = (e) => {
+    const anchor = (e.target.ownerDocument || document).querySelector(
+      "#back-to-top-anchor"
+    );
+
+    if (anchor) {
+      anchor.scrollIntoView({ behavior: "smooth", block: "center" });
+    }
+  };
+
+  return (
+    <Zoom in={trigger}>
+      <div onClick={handleClick} role="presentation" className={classes.zoom}>
+        {children}
+      </div>
+    </Zoom>
+  );
+};
+
+const Navbar = (props) => {
+  const { children } = props;
   const classes = styles();
   const router = useRouter();
   const [anchor, setAnchor] = useState(false);
@@ -75,8 +113,8 @@ const Navbar = ({ children }) => {
   };
 
   return (
-    <div className={classes.root}>
-      <AppBar position="static">
+    <>
+      <AppBar>
         <Toolbar>
           {/* <IconButton
             edge="start"
@@ -124,8 +162,14 @@ const Navbar = ({ children }) => {
           <h1>Work in Progress</h1>
         </Drawer>
       </div>
+      <Toolbar id="back-to-top-anchor" />
       {children}
-    </div>
+      <ScrollTop {...props}>
+        <Fab color="secondary" size="small" aria-label="scroll back to top">
+          <KeyboardArrowUpIcon />
+        </Fab>
+      </ScrollTop>
+    </>
   );
 };
 
