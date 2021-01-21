@@ -104,7 +104,13 @@ const PokemonBigCard = (props) => {
         </Typography>
         <Grid container spacing={4}>
           {typesArray.map((type, i) => (
-            <Grid item xs={6} key={i}>
+            <Grid
+              item
+              xs={typesArray.length > 1 ? 6 : 12}
+              key={i}
+              style={{ display: "flex", justifyContent: "center" }}
+            >
+              {console.log(typesArray.length)}
               <Typography
                 variant={matchXs ? "h5" : "h4"}
                 className={i > 0 ? classes.twoType : ""}

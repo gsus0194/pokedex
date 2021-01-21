@@ -1,16 +1,19 @@
 import React, { useState } from "react";
 import {
   AppBar,
+  Button,
   Drawer,
-  fade,
   IconButton,
   InputBase,
   makeStyles,
+  Paper,
   Toolbar,
   Typography,
 } from "@material-ui/core";
+import Link from "next/link";
+import { useRouter } from "next/router";
+import HomeIcon from "@material-ui/icons/Home";
 import MenuIcon from "@material-ui/icons/Menu";
-import SearchIcon from "@material-ui/icons/Search";
 // import logo from "/pokemon_logo.svg";
 
 const styles = makeStyles((theme) => ({
@@ -25,55 +28,26 @@ const styles = makeStyles((theme) => ({
   },
   title: {
     flexGrow: 1,
+    cursor: "pointer",
     display: "none",
     [theme.breakpoints.up("sm")]: {
       display: "block",
     },
   },
   search: {
-    position: "relative",
-    borderRadius: theme.shape.borderRadius,
-    backgroundColor: fade(theme.palette.common.white, 0.15),
-    "&:hover": {
-      backgroundColor: fade(theme.palette.common.white, 0.25),
-    },
-    marginLeft: 0,
-    width: "100%",
-    [theme.breakpoints.up("sm")]: {
-      marginLeft: theme.spacing(1),
-      width: "auto",
-    },
-  },
-  searchIcon: {
-    padding: theme.spacing(0, 2),
-    height: "100%",
-    position: "absolute",
-    pointerEvents: "none",
     display: "flex",
     alignItems: "center",
-    justifyContent: "center",
   },
-  inputRoot: {
-    color: "inherit",
-  },
-  inputInput: {
-    padding: theme.spacing(1, 1, 1, 0),
-    // vertical padding + font size from searchIcon
-    paddingLeft: `calc(1em + ${theme.spacing(4)}px)`,
-    transition: theme.transitions.create("width"),
-    width: "100%",
-    [theme.breakpoints.up("sm")]: {
-      width: "20ch",
-      "&:focus": {
-        width: "30ch",
-      },
-    },
+  input: {
+    marginLeft: theme.spacing(1),
   },
 }));
 
 const Navbar = ({ children }) => {
   const classes = styles();
+  const router = useRouter();
   const [anchor, setAnchor] = useState(false);
+  const [id, setId] = useState("");
 
   const toggleDrawer = (open) => (e) => {
     if (e.type === "keydown" && (e.key === "Tab" || e.key === "Shift")) {
@@ -83,11 +57,28 @@ const Navbar = ({ children }) => {
     setAnchor(open);
   };
 
+  const handleSubmit = (e) => {
+    e.preventDefault();
+
+    id === "" ? setIdError(true) : setIdError(false);
+
+    if (id !== "") {
+      router.push(`/pokemon/${id}`);
+      setId("");
+    }
+  };
+
+  const handleHomeButton = (e) => {
+    e.preventDefault();
+
+    router.push(`/`);
+  };
+
   return (
     <div className={classes.root}>
       <AppBar position="static">
         <Toolbar>
-          <IconButton
+          {/* <IconButton
             edge="start"
             className={classes.menuButton}
             color="inherit"
@@ -95,19 +86,37 @@ const Navbar = ({ children }) => {
             onClick={toggleDrawer(true)}
           >
             <MenuIcon />
+          </IconButton> */}
+          <IconButton
+            edge="start"
+            className={classes.menuButton}
+            color="secondary"
+            aria-label="hpme button"
+            onClick={(e) => handleHomeButton(e)}
+          >
+            <HomeIcon />
           </IconButton>
-          <Typography className={classes.title} variant="h6" noWrap>
-            Pokédex
-          </Typography>
-          <div className={classes.search}>
-            <div className={classes.searchIcon}>
-              <SearchIcon />
-            </div>
+          <Link href="/">
+            <Typography className={classes.title} variant="h6" noWrap>
+              Pokédex
+            </Typography>
+          </Link>
+          <Paper component="form" className={classes.search}>
             <InputBase
-              placeholder="Search by Name or ID..."
-              classes={{ root: classes.inputRoot, input: classes.inputInput }}
+              className={classes.input}
+              style={{ color: "#000" }}
+              placeholder="Search by Name or #"
+              onChange={(e) => setId(e.target.value)}
             />
-          </div>
+            <Button
+              type="submit"
+              variant="contained"
+              color="secondary"
+              onClick={(e) => handleSubmit(e)}
+            >
+              Search
+            </Button>
+          </Paper>
         </Toolbar>
       </AppBar>
       <div>

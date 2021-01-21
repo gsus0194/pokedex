@@ -15,7 +15,6 @@ import Navbar from "../../components/Navbar";
 import PokemonBigCard from "../../components/PokemonBigCard";
 import Biography from "../../components/Biography";
 import Stats from "../../components/Stats";
-import Evolutions from "../../components/Evolutions";
 
 const styles = makeStyles((theme) => ({
   root: {
@@ -94,7 +93,6 @@ const Pokemon = ({ pokemon, pokemonSpecies }) => {
             >
               <Tab label="Biography" value={0} />
               <Tab label="Stats" value={1} />
-              <Tab label="Evolutions" value={2} />
             </Tabs>
             <Box display="flex" alignItems="center" justifyContent="center">
               <TabPanel value={value} index={0}>
@@ -122,9 +120,6 @@ const Pokemon = ({ pokemon, pokemonSpecies }) => {
               </TabPanel>
               <TabPanel value={value} index={1} style={{ width: "100%" }}>
                 <Stats stats={pokemon.stats} types={pokemon.types} />
-              </TabPanel>
-              <TabPanel value={value} index={2}>
-                <Evolutions url={pokemonSpecies.evolution_chain} />
               </TabPanel>
             </Box>
           </Grid>

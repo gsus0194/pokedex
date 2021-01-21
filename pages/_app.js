@@ -1,5 +1,7 @@
 import { Fragment, useEffect } from "react";
 import ThemeProvider from "../context/ThemeProvider";
+import { StateProvider } from "../context/StateProvider";
+import reducer, { initialState } from "../utils/reducer";
 import Head from "next/head";
 import "../styles/globals.css";
 
@@ -22,7 +24,9 @@ function MyApp({ Component, pageProps }) {
         />
       </Head>
       <ThemeProvider>
-        <Component {...pageProps} />
+        <StateProvider initialState={initialState} reducer={reducer}>
+          <Component {...pageProps} />
+        </StateProvider>
       </ThemeProvider>
     </Fragment>
   );
