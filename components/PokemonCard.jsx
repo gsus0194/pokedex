@@ -84,6 +84,7 @@ const PokemonCard = ({ url }) => {
 
   useEffect(() => {
     const getPokemonData = async () => {
+      setLoading(true);
       const res = await fetch(url);
       const data = await res.json();
 
