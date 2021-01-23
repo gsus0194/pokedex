@@ -10,6 +10,7 @@ import React, { useEffect, useState } from "react";
 import Link from "next/link";
 import { TYPE_COLORS, TITLE_COLORS, BG_COLORS } from "../utils/colors";
 import SkeletonCard from "./SkeletonCard";
+import { useStateValue } from "../context/StateProvider";
 
 const styles = makeStyles((theme) => ({
   box: {
@@ -73,6 +74,7 @@ const PokemonCard = ({ url }) => {
   const theme = useTheme();
   const matches = useMediaQuery(theme.breakpoints.up("sm"));
   const [loading, setLoading] = useState(true);
+  const [{ generation }] = useStateValue();
 
   const [id, setId] = useState("");
   const [fullId, setFullId] = useState("");
@@ -104,7 +106,7 @@ const PokemonCard = ({ url }) => {
 
   return loading ? (
     <SkeletonCard />
-  ) : id > 10000 ? null : (
+  ) : id > generation.offset + generation.total ? null : (
     <Link href={`/pokemon/${id}`} passHref>
       <a className={classes.button}>
         <Box

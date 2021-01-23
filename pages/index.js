@@ -7,17 +7,17 @@ import {
   Container,
   Grid,
   makeStyles,
-  Typography,
   useMediaQuery,
   useTheme,
 } from "@material-ui/core";
 import { Pagination } from "@material-ui/lab";
 import { useStateValue } from "../context/StateProvider";
-import SkeletonCard from "../components/SkeletonCard";
+import GenFilter from "../components/GenFilter";
+import { getOffset } from "../utils/reducer";
 
 const styles = makeStyles((theme) => ({
   root: {
-    marginTop: 40,
+    marginTop: 20,
   },
   item: {
     display: "flex",
@@ -43,8 +43,7 @@ const styles = makeStyles((theme) => ({
 
 const Home = () => {
   const classes = styles();
-  const [{ page, results }, dispatch] = useStateValue();
-  // const [page, setPage] = useState(1);
+  const [{ page, generation, results }, dispatch] = useStateValue();
   const theme = useTheme();
   const matches = useMediaQuery(theme.breakpoints.up("sm"));
 
@@ -64,9 +63,20 @@ const Home = () => {
         );
         dispatch({
           type: "LIST_SUCCESS",
-          payload: res.data,
+          payload: {
+            results: res.data.results,
+            page: 1,
+            generation: generation,
+          },
         });
-        localStorage.setItem("pokedex-page", JSON.stringify(res.data));
+        localStorage.setItem(
+          "pokedex-page",
+          JSON.stringify({
+            results: res.data.results,
+            page: 1,
+            generation: generation,
+          })
+        );
       } catch (error) {
         dispatch({
           type: "LIST_ERROR",
@@ -79,19 +89,28 @@ const Home = () => {
   }, []);
 
   const handleChange = async (event, value) => {
-    const url = `https://pokeapi.co/api/v2/pokemon?offset=${
-      value * 12 - 12
-    }&limit=12`;
+    const url = `https://pokeapi.co/api/v2/pokemon?offset=${getOffset(
+      value,
+      generation.offset
+    )}&limit=12`;
 
     try {
       const res = await axios.get(url);
       dispatch({
         type: "LIST_SUCCESS",
-        payload: { results: res.data.results, page: value },
+        payload: {
+          results: res.data.results,
+          page: value,
+          generation: generation,
+        },
       });
       localStorage.setItem(
         "pokedex-page",
-        JSON.stringify({ results: res.data.results, page: value })
+        JSON.stringify({
+          results: res.data.results,
+          page: value,
+          generation: generation,
+        })
       );
     } catch (error) {
       dispatch({
@@ -110,9 +129,11 @@ const Home = () => {
           alignItems="center"
           mb={3}
           className={classes.pages}
+          flexDirection="column"
         >
+          <GenFilter />
           <Pagination
-            count={75}
+            count={generation.pages}
             page={page}
             onChange={handleChange}
             color="secondary"

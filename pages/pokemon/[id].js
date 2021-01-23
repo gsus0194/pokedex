@@ -15,6 +15,7 @@ import Navbar from "../../components/Navbar";
 import PokemonBigCard from "../../components/PokemonBigCard";
 import Biography from "../../components/Biography";
 import Stats from "../../components/Stats";
+import Custom404 from "../../components/Custom404";
 
 const styles = makeStyles((theme) => ({
   root: {
@@ -68,7 +69,7 @@ const Pokemon = ({ pokemon, pokemonSpecies }) => {
     setValue(newValue);
   };
 
-  return (
+  return pokemon ? (
     <Navbar>
       <Container maxWidth={matchesLg ? "lg" : "sm"} className={classes.root}>
         <Grid container className={classes.container}>
@@ -126,18 +127,36 @@ const Pokemon = ({ pokemon, pokemonSpecies }) => {
         </Grid>
       </Container>
     </Navbar>
+  ) : (
+    <Navbar>
+      <Custom404 />
+    </Navbar>
   );
 };
 
 Pokemon.getInitialProps = async ({ query }) => {
   const id = query.id;
-  const pokemon = await axios
-    .get(`https://pokeapi.co/api/v2/pokemon/${id}`)
-    .then((res) => res.data);
-  const pokemonSpecies = await axios
-    .get(`https://pokeapi.co/api/v2/pokemon-species/${id}`)
-    .then((res) => res.data);
+  const pokemonUrl = `https://pokeapi.co/api/v2/pokemon/${id}`;
+  const speciesUrl = `https://pokeapi.co/api/v2/pokemon-species/${id}`;
+  let pokemon = null;
+  let pokemonSpecies = null;
+
+  try {
+    const pokemonResponse = await axios.get(pokemonUrl);
+    const speciesResponse = await axios.get(speciesUrl);
+    pokemon = pokemonResponse.data;
+    pokemonSpecies = speciesResponse.data;
+  } catch (error) {
+    console.log(error);
+  }
+
   return { pokemon, pokemonSpecies };
+  // const pokemon = await axios
+  //   .get(`https://pokeapi.co/api/v2/pokemon/${id}`)
+  //   .then((res) => res.data);
+  // const pokemonSpecies = await axios
+  //   .get(`https://pokeapi.co/api/v2/pokemon-species/${id}`)
+  //   .then((res) => res.data);
 };
 
 export default Pokemon;

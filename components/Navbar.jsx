@@ -16,9 +16,7 @@ import {
 import Link from "next/link";
 import { useRouter } from "next/router";
 import HomeIcon from "@material-ui/icons/Home";
-import MenuIcon from "@material-ui/icons/Menu";
 import KeyboardArrowUpIcon from "@material-ui/icons/KeyboardArrowUp";
-// import logo from "/pokemon_logo.svg";
 
 const styles = makeStyles((theme) => ({
   root: {
@@ -102,7 +100,7 @@ const Navbar = (props) => {
     id === "" ? setIdError(true) : setIdError(false);
 
     if (id !== "") {
-      router.push(`/pokemon/${id}`);
+      router.push(`/pokemon/${id.toLowerCase()}`);
       setId("");
     }
   };
