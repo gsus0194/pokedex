@@ -59,7 +59,7 @@ const TabPanel = (props) => {
   );
 };
 
-const Pokemon = ({ pokemon, pokemonSpecies }) => {
+const Pokemon = ({ pokemon, pokemonSpecies, error }) => {
   const classes = styles();
   const theme = useTheme();
   const matchesLg = useMediaQuery(theme.breakpoints.up("lg"));
@@ -69,7 +69,11 @@ const Pokemon = ({ pokemon, pokemonSpecies }) => {
     setValue(newValue);
   };
 
-  return pokemon ? (
+  return error ? (
+    <Navbar>
+      <Custom404 error={error} />
+    </Navbar>
+  ) : pokemon ? (
     <Navbar>
       <Container maxWidth={matchesLg ? "lg" : "sm"} className={classes.root}>
         <Grid container className={classes.container}>
@@ -140,17 +144,18 @@ Pokemon.getInitialProps = async ({ query }) => {
   const speciesUrl = `https://pokeapi.co/api/v2/pokemon-species/${id}`;
   let pokemon = null;
   let pokemonSpecies = null;
+  let error = null;
 
   try {
     const pokemonResponse = await axios.get(pokemonUrl);
     const speciesResponse = await axios.get(speciesUrl);
     pokemon = pokemonResponse.data;
     pokemonSpecies = speciesResponse.data;
-  } catch (error) {
-    console.log(error);
+  } catch (err) {
+    error = err;
   }
 
-  return { pokemon, pokemonSpecies };
+  return { pokemon, pokemonSpecies, error };
   // const pokemon = await axios
   //   .get(`https://pokeapi.co/api/v2/pokemon/${id}`)
   //   .then((res) => res.data);

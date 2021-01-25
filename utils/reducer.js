@@ -7,6 +7,7 @@ export const initialState = {
     pages: 75,
   },
   results: [],
+  error: null,
 };
 
 const LIST_SUCCESS = "LIST_SUCCESS";
@@ -25,7 +26,18 @@ const reducer = (state, action) => {
     case SET_GEN:
       return { ...state, ...action.payload };
     case LIST_ERROR:
-      return console.log(action.payload);
+      return {
+        ...state,
+        page: 1,
+        generation: {
+          gen: "ALL",
+          offset: 0,
+          total: 898,
+          pages: 75,
+        },
+        results: [],
+        error: action.payload,
+      };
     default:
       return state;
   }

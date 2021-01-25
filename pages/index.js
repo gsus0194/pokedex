@@ -43,7 +43,7 @@ const styles = makeStyles((theme) => ({
 
 const Home = () => {
   const classes = styles();
-  const [{ page, generation, results }, dispatch] = useStateValue();
+  const [{ page, generation, results, error }, dispatch] = useStateValue();
   const theme = useTheme();
   const matches = useMediaQuery(theme.breakpoints.up("sm"));
 
@@ -120,7 +120,11 @@ const Home = () => {
     }
   };
 
-  return (
+  return error ? (
+    <Navbar>
+      <Custom404 error={error} />
+    </Navbar>
+  ) : (
     <Navbar>
       <Container className={classes.root} maxWidth="lg">
         <Box
